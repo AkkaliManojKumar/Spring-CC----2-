@@ -1,0 +1,84 @@
+------------------------------------------------------------------------------------------ Book (class) -- model (package) -------------------------
+
+package anygroupid.wiprocc_sprjavabased.model;
+
+public class Book {
+
+	private String name;
+	private int isbn;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+	
+	public Book() {
+		// TODO Auto-generated constructor stub
+	}
+	public Book(String name, int isbn) {
+		super();
+		this.name = name;
+		this.isbn = isbn;
+	}
+	@Override
+	public String toString() {
+		return "Book [name=" + name + ", isbn=" + isbn + "]";
+	}
+	
+	
+}
+
+
+------------------------------------- MyAppconfig (Class) ---- configaration (PACKAGE) ------------------------------------------------------- 
+
+package anygroupid.wiprocc_sprjavabased.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import anygroupid.wiprocc_sprjavabased.model.Book;
+
+@Configuration
+public class MyAppConfig {                           //------------------>>>> THIS CONFIGARATION CLASS IS IMPOERTANT LIKE sprin2.xml
+                                                      //----------------<>>>> this configaration has ALL BEANS MENCTIONED IN IT
+                                                      
+	@Bean
+	public Book getBook()  //----->>> METHOD WITH BOOK TYPE (we can write any method name)
+	{
+		return new Book("My Last WorldCup", 55);     //----------->>> here instance is created & values ARE GIVEN INSIDE
+	}
+}
+
+
+
+------------------------------------------------------------------------------------------------Bookservice-(class)---service - (package) ---------------------------
+ 
+ 
+ package anygroupid.wiprocc_sprjavabased.service;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import anygroupid.wiprocc_sprjavabased.configuration.MyAppConfig;
+import anygroupid.wiprocc_sprjavabased.model.Book;
+
+public class BookService {
+
+	public static void main(String[] args) {
+	
+		
+		ApplicationContext factory=new AnnotationConfigApplicationContext(MyAppConfig.class);     //----->>> INSTEAD OF USING BEANFACTORY WE CAN ALSO USE THIS
+		
+		Book book= factory.getBean(Book.class);        //------->>> REAMING ALL ARE SAME 
+
+		System.out.println(book);
+	}
+
+}
