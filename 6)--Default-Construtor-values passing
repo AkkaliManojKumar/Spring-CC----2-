@@ -1,0 +1,151 @@
+WE CAN ALSO PASS VALUES IN DEFAULT CONSTRUCTOR 
+WITH OUT PASSING VALUES IN @COonfigaration FILE
+-------------------------------------------------------------------------------- Configartion
+
+package SpringPracCC.Configaration;
+
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import SpringPracCC.model.Book;
+import SpringPracCC.model.Library;
+
+@Configuration
+public class Config {
+	
+	
+	
+	
+	@Bean
+	public Library getLibrary() {
+		return new Library();         //------->>> when no argument passed default constructor called
+	}                                //----->>> if argument passed that argument constructor is called
+	
+	@Bean
+	public Book getBook() {
+		return new Book("HEY***",111);     //->> here argument constructor called
+		
+	}
+	
+
+}
+-------------------------------------------------------------------- Book
+package SpringPracCC.model;
+
+public class Book {
+
+	private String name;
+	private int isbn;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+	
+	public Book() {                                    //---------------->>>> DEFAULT CONSTRUCTOR
+		// TODO Auto-generated constructor stub
+	   System.out.println("Default const BOOK called");
+		
+		name="rich dad and poor dad";             //---------------->>> arguments passed in default constructor with out passing in the configaration file
+		isbn = 786;
+	}
+	public Book(String name, int isbn) {                  //---------------->>>> ARGUMENT CONSTRUCTOR
+		super();
+		this.name = name;
+		this.isbn = isbn;
+	}
+	
+	@Override
+	public String toString() {
+		return "Book [name=" + name + ", isbn=" + isbn + "]";
+	}
+}
+
+-------------------------------------------------------------------- Library
+package SpringPracCC.model;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class Library {
+   
+  @Autowired                                 ///------------------------->>>>> BOOK IS AUTOWIRED(INJECTED) TO THE LIBRARY BEAN 
+   private	Book book;
+   private String LibraryName;
+   
+   
+   
+public Book getBook() {
+	return book;
+}
+
+public void setBook(Book book) {
+	this.book = book;
+}
+public String getLibraryName() {
+	return LibraryName;
+}
+public void setLibraryName(String libraryName) {
+	LibraryName = libraryName;
+}
+public Library(Book book, String libraryName) {               //---------------------->>> Argument Constructor
+	super();
+	this.book = book;
+	LibraryName = libraryName;
+}
+public Library() {                                                //---------------->>>> DEFAULT CONSTRUCTOR
+	super();
+	System.out.println("Default const library called");
+	// TODO Auto-generated constructor stub
+  
+	LibraryName = "pora phuka";    //----------->>> value passed in default constructor 
+	
+}
+@Override
+public String toString() {
+	return "Library [book=" + book + ", LibraryName=" + LibraryName + "]";
+}
+   
+
+}
+
+-------------------------------------------------------------------- Service
+package SpringPracCC.service;
+
+
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import SpringPracCC.Configaration.Config;
+import SpringPracCC.model.Book;
+import SpringPracCC.model.Library;
+
+public class BookService {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		
+		ApplicationContext factory=new AnnotationConfigApplicationContext(Config.class);
+		
+		Library library= factory.getBean(Library.class);     //----------->>> here printing library object
+		
+		System.out.println(library);
+	}
+
+}
+
+--------------------------------- OUT PUT _____________------------------------------------------------------------
+Default const library called
+Library [book=Book [name=HEY***, isbn=111], LibraryName=pora phuka]
