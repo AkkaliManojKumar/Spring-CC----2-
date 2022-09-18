@@ -1,0 +1,159 @@
+@Component = it calls the default constructor (COMPONENT ONLY CALLS DEFAULT CONSTRUCTOR) ARGUMENT CONSTRUCTOR IT WONT CALL
+
+@Bean
+//	public Library getLibrary() {
+//		return new Library();     //------------------->>>> this also calls default construtor 
+//	}
+
+ BUT COMPONENT IS SHORT SO WE USE IT 
+---------------------------------------------------------------------------------------- Configartion
+package SpringPracCC.Configaration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
+import SpringPracCC.model.Book;
+import SpringPracCC.model.Library;
+
+@Configuration
+@ComponentScan(basePackages="SpringPracCC.model")       //------------>>>> MENCTION PACKAGE NAME OF MODEL WHICH HAS BOOK AND LIBRARY
+public class Config {
+	
+	
+	
+	
+//	@Bean
+//	public Library getLibrary() {
+//		return new Library();               //------------->>>> NO NEED TO WRITE THIS DIRECTLY WE CAN WRITE COMPONENT
+//	}
+	
+//	@Bean
+//	public Book getBook() {
+//		return new Book("HEY***",111); 
+//		
+//	}
+	
+
+}
+
+---------------------------------------------------------------------------------------- Libarary
+package SpringPracCC.model;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+                   //------->> THIS CLASS WILL BECOME THE COMPONENT
+@Component        //---------->>> IN THIS DEFAULT CONSTRUCTOR ONLY CALLED 
+public class Library {
+   
+  @Autowired
+   private	Book book;
+   private String LibraryName;
+   
+   
+   
+public Book getBook() {
+	return book;
+}
+
+public void setBook(Book book) {
+	this.book = book;
+}
+public String getLibraryName() {
+	return LibraryName;
+}
+public void setLibraryName(String libraryName) {
+	LibraryName = libraryName;
+}
+public Library(Book book, String libraryName) {
+	super();
+	this.book = book;
+	LibraryName = libraryName;
+}
+public Library() {
+	super();
+	System.out.println("Default const library called");
+	// TODO Auto-generated constructor stub
+	LibraryName = "pora phuka";
+	
+}
+@Override
+public String toString() {
+	return "Library [book=" + book + ", LibraryName=" + LibraryName + "]";
+}
+   
+
+}
+
+---------------------------------------------------------------------------------------- book
+package SpringPracCC.model;
+
+import org.springframework.stereotype.Component;
+
+@Component                               //---------->>> IN THIS DEFAULT CONSTRUCTOR ONLY CALLED 
+public class Book {
+
+	private String name;
+	private int isbn;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+	
+	public Book() {
+		// TODO Auto-generated constructor stub
+	    System.out.println("Default const BOOK called");
+		
+		name="rich dad and poor dad";
+		isbn = 786;
+	}
+	public Book(String name, int isbn) {
+		super();
+		this.name = name;
+		this.isbn = isbn;
+	}
+	
+	@Override
+	public String toString() {
+		return "Book [name=" + name + ", isbn=" + isbn + "]";
+	}
+}
+
+---------------------------------------------------------------------------------------- service
+package SpringPracCC.service;
+
+
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import SpringPracCC.Configaration.Config;
+import SpringPracCC.model.Book;
+import SpringPracCC.model.Library;
+
+public class BookService {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		
+		ApplicationContext factory=new AnnotationConfigApplicationContext(Config.class);
+		
+		Library library= factory.getBean(Library.class); 
+		
+		System.out.println(library);
+	}
+
+}
